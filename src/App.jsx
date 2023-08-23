@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 
@@ -10,6 +10,25 @@ function App() {
     character: "",
     environment: "",
   });
+
+  useEffect(() => {
+    fetch("https://api.openai.com/v1/chat/completions", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer`,
+      },
+      method: "post",
+      body: {
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "user", content: "recommend movies/books to watch from 90s" },
+        ],
+        temperature: 0.7,
+      },
+    }).then((res) => {
+      console.log(res);
+    });
+  }, []);
 
   const handleEnterKey = (event) => {
     if (event.key === "Enter") {
