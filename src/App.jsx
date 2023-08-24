@@ -10,25 +10,31 @@ function App() {
     character: "",
     environment: "",
   });
-
-  useEffect(() => {
-    fetch("https://api.openai.com/v1/chat/completions", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer`,
-      },
-      method: "post",
-      body: {
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "user", content: "recommend movies/books to watch from 90s" },
-        ],
-        temperature: 0.7,
-      },
-    }).then((res) => {
-      console.log(res);
-    });
-  }, []);
+  const talkToAI = (e) => {
+    e.preventDefault();
+    // fetch("https://api.openai.com/v1/chat/completions", {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+    //   },
+    //   method: "post",
+    //   body: JSON.stringify({
+    //     temperature: 0.7,
+    //     model: "gpt-3.5-turbo",
+    //     messages: [
+    //       {
+    //         role: "user",
+    //         content: "recommend movies/books to watch from 90s",
+    //       },
+    //     ],
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
+    console.log(input);
+  };
 
   const handleEnterKey = (event) => {
     if (event.key === "Enter") {
@@ -47,7 +53,7 @@ function App() {
           suggest a curated list of BOOKS/MOVIES!
         </p>
       </div>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={talkToAI}>
         <div className="form_details">
           <p>
             Age Group:
@@ -57,7 +63,7 @@ function App() {
               className="input"
               placeholder="enter your age"
               value={input.Age}
-              onKeyDown={handleEnterKey}
+              // onKeyDown={handleEnterKey}
               onChange={(event) => setInput(event.target.value)}
             />
           </p>
@@ -69,7 +75,7 @@ function App() {
               className="input"
               placeholder="enter your genre/era preference"
               value={input.genre_era}
-              onKeyDown={handleEnterKey}
+              // onKeyDown={handleEnterKey}
               onChange={(event) => setInput(event.target.value)}
             />
           </p>
@@ -81,7 +87,7 @@ function App() {
               className="input"
               placeholder=" enter your favourite author/actor"
               value={input.author_actor}
-              onKeyDown={handleEnterKey}
+              // onKeyDown={handleEnterKey}
               onChange={(event) => setInput(event.target.value)}
             />
           </p>
@@ -93,7 +99,7 @@ function App() {
               className="input"
               placeholder=" enter your character preference"
               value={input.character}
-              onKeyDown={handleEnterKey}
+              // onKeyDown={handleEnterKey}
               onChange={(event) => setInput(event.target.value)}
             />
           </p>
@@ -105,13 +111,13 @@ function App() {
               className="input"
               placeholder="enter environment you like to read/watch"
               value={input.environment}
-              onKeyDown={handleEnterKey}
+              // onKeyDown={handleEnterKey}
               onChange={(event) => setInput(event.target.value)}
             />
           </p>
         </div>
         <div>
-          <button>BOOKS/MOVIES Suggestions</button>
+          <button type="submit">BOOKS/MOVIES Suggestions</button>
         </div>
       </form>
     </div>
