@@ -5,43 +5,59 @@ import "./App.css";
 function App() {
   const [input, setInput] = useState({
     Age: "",
-    genre_era: "",
-    author_actor: "",
+    era: "",
+    actor: "",
     character: "",
     environment: "",
   });
+  const [response, setResponse] = useState("");
+  const [loader, setLoader] = useState(false);
+
+  const handleChange = (e) => {
+    const newObj = {
+      ...input,
+      [e.target.name]: e.target.value,
+    };
+    setInput(newObj);
+  };
   const talkToAI = (e) => {
-    e.preventDefault();
-    // fetch("https://api.openai.com/v1/chat/completions", {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
-    //   },
-    //   method: "post",
-    //   body: JSON.stringify({
-    //     temperature: 0.7,
-    //     model: "gpt-3.5-turbo",
-    //     messages: [
-    //       {
-    //         role: "user",
-    //         content: "recommend movies/books to watch from 90s",
-    //       },
-    //     ],
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
+    if (
+      input.Age &&
+      input.actor &&
+      input.character &&
+      input.environment &&
+      input.era
+    ) {
+      setLoader(true);
+      const sentence = `Hey gpt , i'm ${input.Age} years old. I want to watch a movie of my favorite actor ${input.actor} of ${input.era}. I want to watch with ${input.environment} of a ${input.character} character ,suggest atleast 5 movies.`;
+
+      fetch("https://api.openai.com/v1/chat/completions", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+        },
+        method: "post",
+        body: JSON.stringify({
+          temperature: 0.7,
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "user",
+              content: sentence,
+            },
+          ],
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setLoader(false);
+          console.log(res);
+          setResponse(res?.choices[0]?.message?.content);
+        });
+    }
     console.log(input);
   };
 
-  const handleEnterKey = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      console.log("Input value:", input);
-    }
-  };
   return (
     <div>
       <div className="heading">
@@ -53,7 +69,7 @@ function App() {
           suggest a curated list of BOOKS/MOVIES!
         </p>
       </div>
-      <form onSubmit={talkToAI}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <div className="form_details">
           <p>
             Age Group:
@@ -63,32 +79,29 @@ function App() {
               className="input"
               placeholder="enter your age"
               value={input.Age}
-              // onKeyDown={handleEnterKey}
-              onChange={(event) => setInput(event.target.value)}
+              onChange={handleChange}
             />
           </p>
           <p>
             Genre Prefrences/Era Prefrences:
             <input
               type="text"
-              name="genre_era"
+              name="era"
               className="input"
-              placeholder="enter your genre/era preference"
-              value={input.genre_era}
-              // onKeyDown={handleEnterKey}
-              onChange={(event) => setInput(event.target.value)}
+              placeholder="enter your era preference"
+              value={input.era}
+              onChange={handleChange}
             />
           </p>
           <p>
             Favourite Author/Actor:
             <input
               type="text"
-              name="author_actor"
+              name="actor"
               className="input"
-              placeholder=" enter your favourite author/actor"
-              value={input.author_actor}
-              // onKeyDown={handleEnterKey}
-              onChange={(event) => setInput(event.target.value)}
+              placeholder=" enter your favourite actor"
+              value={input.actor}
+              onChange={handleChange}
             />
           </p>
           <p>
@@ -99,8 +112,7 @@ function App() {
               className="input"
               placeholder=" enter your character preference"
               value={input.character}
-              // onKeyDown={handleEnterKey}
-              onChange={(event) => setInput(event.target.value)}
+              onChange={handleChange}
             />
           </p>
           <p>
@@ -109,16 +121,23 @@ function App() {
               type="text"
               name="environment"
               className="input"
-              placeholder="enter environment you like to read/watch"
+              placeholder="enter environment you like to watch"
               value={input.environment}
-              // onKeyDown={handleEnterKey}
-              onChange={(event) => setInput(event.target.value)}
+              onChange={handleChange}
             />
           </p>
         </div>
         <div>
-          <button type="submit">BOOKS/MOVIES Suggestions</button>
+          <button onClick={talkToAI} disabled={loader}>
+            {" "}
+            {loader ? "Loading..." : "MOVIES Suggestions"}
+          </button>
         </div>
+        {response && (
+          <div className="Response">
+            <p>{response}</p>
+          </div>
+        )}
       </form>
     </div>
   );
