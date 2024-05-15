@@ -62,83 +62,85 @@ function App() {
     <div>
       <div className="heading">
         <h1>AI Curated ReadWatch</h1>
-        <p>
+        <h4>
           Our AI-powered tool will guide you in choosing the perfect BOOKS/
           MOVIES when you're unsure about what to READ/WATCH. Simply fill out
           the form below with information about your Curiosity, and we'll
           suggest a curated list of BOOKS/MOVIES!
-        </p>
+        </h4>
       </div>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div className="form_details">
-          <p>
-            Age Group:
-            <input
-              type="number"
-              name="Age"
-              className="input"
-              placeholder="enter your age"
-              value={input.Age}
-              onChange={handleChange}
-            />
-          </p>
-          <p>
-            Genre Prefrences/Era Prefrences:
-            <input
-              type="text"
-              name="era"
-              className="input"
-              placeholder="enter your era preference"
-              value={input.era}
-              onChange={handleChange}
-            />
-          </p>
-          <p>
-            Favourite Author/Actor:
-            <input
-              type="text"
-              name="actor"
-              className="input"
-              placeholder=" enter your favourite actor"
-              value={input.actor}
-              onChange={handleChange}
-            />
-          </p>
-          <p>
-            Character preferences:
-            <input
-              type="text"
-              name="character"
-              className="input"
-              placeholder=" enter your character preference"
-              value={input.character}
-              onChange={handleChange}
-            />
-          </p>
-          <p>
-            Reading/Watching Environment:
-            <input
-              type="text"
-              name="environment"
-              className="input"
-              placeholder="enter environment you like to watch"
-              value={input.environment}
-              onChange={handleChange}
-            />
-          </p>
-        </div>
-        <div>
-          <button onClick={talkToAI} disabled={loader}>
-            {" "}
-            {loader ? "Loading..." : "MOVIES Suggestions"}
-          </button>
-        </div>
-        {response && (
-          <div className="Response">
-            <p>{response}</p>
+      <div>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="form_details">
+            <span className="movie-input">
+              <b>Age Group:</b>
+              <input
+                type="number"
+                name="Age"
+                className="input"
+                placeholder="enter your age"
+                value={input.Age}
+                onChange={handleChange}
+              />
+            </span>
+            <span className="movie-input">
+              <b>Genre Prefrences/Era Prefrences:</b>
+              <input
+                type="text"
+                name="era"
+                className="input"
+                placeholder="enter your era preference"
+                value={input.era}
+                onChange={handleChange}
+              />
+            </span>
+            <span className="movie-input">
+              <b>Favourite Author/Actor:</b>
+              <input
+                type="text"
+                name="actor"
+                className="input"
+                placeholder=" enter your favourite actor"
+                value={input.actor}
+                onChange={handleChange}
+              />
+            </span>
+            <span className="movie-input">
+              <b>Character preferences:</b>
+              <input
+                type="text"
+                name="character"
+                className="input"
+                placeholder=" enter your character preference"
+                value={input.character}
+                onChange={handleChange}
+              />
+            </span>
+            <span className="movie-input">
+              <b>Reading/Watching Environment:</b>
+              <input
+                type="text"
+                name="environment"
+                className="input"
+                placeholder="enter environment you like to watch"
+                value={input.environment}
+                onChange={handleChange}
+              />
+            </span>
           </div>
-        )}
-      </form>
+          <div>
+            <button onClick={talkToAI} disabled={loader}>
+              {" "}
+              {loader ? "Loading..." : "MOVIES Suggestions"}
+            </button>
+          </div>
+          {response && (
+            <div className="Response">
+              <p>{response}</p>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }
